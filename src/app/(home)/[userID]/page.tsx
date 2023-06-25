@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -24,22 +24,25 @@ export default function ChatBotPage() {
   let [userInput, setUserInput] = useState("");
 
   // user enter the message
-  const onUserEnter = () => {
+  const userInputOnclick = () => {
+    //add user message to the message display
     setConversation((preContent) => [...preContent, userInput]);
     setUserInput("");
     console.log(userInput);
     console.log(conversation);
+    //push user input to backend
   };
   // user typing in the message
   const handleMessageChange = (event) => {
     setUserInput(event.target.value);
   };
-  const userInputOnclick = () => {
-    //add user message to the message display
-    //push user input to backend
-  };
 
   // scroll to bottom on new message recieve/sent with use effect
+  const chatbox = useRef(null);
+  useEffect(() => {
+    const divElement = chatbox.current;
+    divElement.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <ChakraProvider>
@@ -59,9 +62,15 @@ export default function ChatBotPage() {
           </GridItem>
           <Center>
             <GridItem colSpan={3}>
-              <h1>Hello, I am this person that you care about</h1>
-              <h1>Hello, I am this person that you care about</h1>
-              <h1>Hello, I am this person that you care about</h1>
+              <div
+                ref={chatbox}
+                className="messageContainer"
+                style={{ width: "200px", height: "100px" }}
+              >
+                {conversation.map((message, index) => (
+                  <div key={index}>{message}</div>
+                ))}
+              </div>
               <GridItem>
                 <Input
                   className="userInput"
@@ -69,7 +78,7 @@ export default function ChatBotPage() {
                   value={userInput}
                   onChange={handleMessageChange}
                 />
-                <Button onClick={onUserEnter}> Enter</Button>
+                <Button onClick={userInputOnclick}> Enter</Button>
               </GridItem>
             </GridItem>
           </Center>
