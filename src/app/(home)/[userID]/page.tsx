@@ -24,12 +24,15 @@ export default function ChatBotPage() {
   let [userInput, setUserInput] = useState("");
 
   // user enter the message
-  const onUserEnter = (newMessage: string) => {
-    setConversation([...conversation, newMessage]);
+  const onUserEnter = () => {
+    setConversation((preContent) => [...preContent, userInput]);
+    setUserInput("");
+    console.log(userInput);
+    console.log(conversation);
   };
   // user typing in the message
-  const handleMessageChange = () => {
-    setUserInput(value);
+  const handleMessageChange = (event) => {
+    setUserInput(event.target.value);
   };
   const userInputOnclick = () => {
     //add user message to the message display
@@ -42,7 +45,7 @@ export default function ChatBotPage() {
     <ChakraProvider>
       <main className="overflow-hidden">
         <Grid gap={4}>
-          <GridItem classname="chatbox" colSpan={1}>
+          <GridItem className="chatbox" colSpan={1}>
             <Center>
               <Wrap>
                 <WrapItem>
@@ -66,7 +69,7 @@ export default function ChatBotPage() {
                   value={userInput}
                   onChange={handleMessageChange}
                 />
-                <Button onClick={userInputOnclick}> Enter</Button>
+                <Button onClick={onUserEnter}> Enter</Button>
               </GridItem>
             </GridItem>
           </Center>
