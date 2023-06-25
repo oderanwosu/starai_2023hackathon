@@ -15,12 +15,15 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
+import useSWR from "swr";
 
 export default function ChatBotPage() {
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
   //the conversation
   let [conversation, setConversation] = useState([]);
   // adding message to the message box when user type stuff in
   let [userInput, setUserInput] = useState("");
+  let [botRes, setBotRes] = useState("");
 
   // user enter the message
   const userInputOnclick = () => {
@@ -32,10 +35,18 @@ export default function ChatBotPage() {
       message.sender = "user";
       setConversation((preContent) => [...preContent, message]);
       setUserInput("");
+      //api request
+      const { res, error } = useSWR("/api/mongodb", fetcher);
+      setBotRes(res);
     }
-
     //how to make seperate user message vs chatbot message?
     //push user input to backend
+    if (botRes != "") {
+      message.content = botRes;
+      message.sender = "star";
+      setConversation((preContent) => [...preContent, message]);
+      setBotRes("");
+    }
   };
   // user typing in the message
   const handleMessageChange = (event) => {
