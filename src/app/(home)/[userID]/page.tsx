@@ -92,13 +92,21 @@ export default function ChatBotPage() {
     }
   };
   
-  // if (error) return <div>Failed to load</div>
-//    if (!data) return  <Flex
-//    width={"100vw"}
-//    height={"100vh"}
-//    alignContent={"center"}
-//    justifyContent={"center"}
-//  ><Center><CircularProgress isIndeterminate color="#2C2ABB" /></Center></Flex>
+  if (error){
+    return <Flex
+   width={"100vw"}
+   height={"100vh"}
+   alignContent={"center"}
+   justifyContent={"center"}
+ ><Center><Text color={"tomato"}> There was an error retrieving the user. Refresh the page.</Text></Center></Flex>
+  }
+  
+   if (!data) return  <Flex
+   width={"100vw"}
+   height={"100vh"}
+   alignContent={"center"}
+   justifyContent={"center"}
+ ><Center><CircularProgress isIndeterminate color="#2C2ABB" /></Center></Flex>
 
   // user typing in the message
   const handleMessageChange = (event) => {
@@ -108,22 +116,17 @@ export default function ChatBotPage() {
     }
   };
 
-  // scroll to bottom on new message recieve/sent with use effect
-  const chatbox = useRef(null);
-  useEffect(() => {
-    const chatboxElement = chatbox.current;
-    document.title = "Chat";
-    chatboxElement.scrollIntoView({ behavior: "smooth" });
-    chatboxElement.scrollTop = chatboxElement.scrollHeight;
-  }, [conversation]);
-
-  //press enter to submit
-  const handleKeypress = (event) => {
-    if (event.keyCode === 13) {
-      userInputOnclick();
-    }
-  };
-
+   // scroll to bottom on new message recieve/sent with use effect
+   const chatbox = useRef(null);
+   useEffect(() => {
+     const chatboxElement = chatbox.current;
+      document.title = 'Chat'
+     chatboxElement.scrollIntoView({ behavior: "smooth" });
+     chatboxElement.scrollTop = chatboxElement.scrollHeight;
+     
+     
+   }, [conversation]);
+ 
   return (
     <Grid paddingTop={"5vh"} paddingInline={"3vw"}>
       <section id="header">
@@ -131,10 +134,23 @@ export default function ChatBotPage() {
         <Avatar src="https://bit.ly/sage-adebayo" />
         <Box ml="3">
           <Text fontWeight="bold">
-            Segun Adebayo
-            <Badge ml="1" colorScheme="yellow">
-              Responding
-            </Badge>
+            {starName}
+            {responseStatus === 0 && (
+              <Badge ml="1" colorScheme="grey">
+                Waiting for you
+              </Badge>
+            )}
+            {responseStatus === 2 && (
+              <Badge ml="1" colorScheme="green">
+                Thinking...
+              </Badge>
+            )}
+            {responseStatus === 3 && (
+              <Badge ml="1" colorScheme="blue">
+                Responded
+              </Badge>
+            )}
+            
           </Text>
           <Text fontSize="sm">Last seen two hours ago</Text>
         </Box>
@@ -147,12 +163,7 @@ export default function ChatBotPage() {
     </section>
     <section className="relative bottom-0 w-full py-10" >
         <Center>
-          <TextBox
-            handleClick={userInputOnclick}
-            handleMessageChange={handleMessageChange}
-            userInput={userInput}
-            handleKeyPress={handleKeypress}
-          ></TextBox>
+          <TextBox handleClick={userInputOnclick} handleMessageChange={handleMessageChange} userInput={userInput}></TextBox>
         </Center>
       </section>
     </Grid>
