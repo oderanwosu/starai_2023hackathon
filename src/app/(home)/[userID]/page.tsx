@@ -39,10 +39,12 @@ export default function ChatBotPage() {
 
   // scroll to bottom on new message recieve/sent with use effect
   const chatbox = useRef(null);
+
   useEffect(() => {
-    const divElement = chatbox.current;
-    divElement.scrollIntoView({ behavior: "smooth" });
-  }, []);
+    const chatboxElement = chatbox.current;
+    chatboxElement.scrollIntoView({ behavior: "smooth" });
+    chatboxElement.scrollTop = chatboxElement.scrollHeight;
+  }, [conversation]);
 
   return (
     <ChakraProvider>
@@ -65,7 +67,7 @@ export default function ChatBotPage() {
               <div
                 ref={chatbox}
                 className="messageContainer"
-                style={{ width: "200px", height: "100px" }}
+                style={{ width: "200px", height: "100px", overflowY: "auto" }}
               >
                 {conversation.map((message, index) => (
                   <div key={index}>{message}</div>
