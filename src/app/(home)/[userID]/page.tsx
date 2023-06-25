@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useState, useRef, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -18,11 +17,28 @@ import {
   Badge,
   Box,
   Flex,
+  Container,
+  Divider,
+  CircularProgress
 } from "@chakra-ui/react";
+import { handleClientScriptLoad } from "next/script";
+import MessageBubble from "@/components/message_bubble";
+import { useEffect, useRef, useState } from "react";
+import MessagesContainer from "@/components/messages_list";
+import TextBox from "@/components/textbox";
+import { useSearchParams } from 'next/navigation'
 import useSWR from "swr";
 
 export default function ChatBotPage() {
+ 
+  const query = useSearchParams()
+  const userID = query.get('userID')
+
+
+  //fetch star information
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const { data, error } = useSWR(`api/user?id=${userID}`, fetcher);
+
   //the conversation
   let [conversation, setConversation] = useState([]);
   // adding message to the message box when user type stuff in
@@ -67,59 +83,61 @@ export default function ChatBotPage() {
       setBotRes("");
     }
   };
+  
+  // if (error) return <div>Failed to load</div>
+//    if (!data) return  <Flex
+//    width={"100vw"}
+//    height={"100vh"}
+//    alignContent={"center"}
+//    justifyContent={"center"}
+//  ><Center><CircularProgress isIndeterminate color="#2C2ABB" /></Center></Flex>
+
   // user typing in the message
   const handleMessageChange = (event) => {
     setUserInput(event.target.value);
   };
 
-  // scroll to bottom on new message recieve/sent with use effect
-  const chatbox = useRef(null);
-  useEffect(() => {
-    const chatboxElement = chatbox.current;
-    chatboxElement.scrollIntoView({ behavior: "smooth" });
-    chatboxElement.scrollTop = chatboxElement.scrollHeight;
-  }, [conversation]);
-
+   // scroll to bottom on new message recieve/sent with use effect
+   const chatbox = useRef(null);
+   useEffect(() => {
+     const chatboxElement = chatbox.current;
+      document.title = 'Chat'
+     chatboxElement.scrollIntoView({ behavior: "smooth" });
+     chatboxElement.scrollTop = chatboxElement.scrollHeight;
+     
+     
+   }, [conversation]);
+ 
   return (
-<ChakraProvider>
-<main className="overflow-hidden">
-<Grid gap={4}>
-<GridItem className="chatbox" colSpan={1}>
-<Center>
-<Wrap>
-<WrapItem>
-<Avatar
-name="Dan Abrahmov"
-src="https://bit.ly/dan-abramov"
-/>
-</WrapItem>
-</Wrap>
-</Center>
-</GridItem>
-<Center>
-<GridItem colSpan={3}>
-<div
-ref={chatbox}
-className="messageContainer"
-style={{ width: "200px", height: "100px", overflowY: "auto" }}
->
-{conversation.map((message, index) => (
-<div key={index}>{message.content}</div>
-))}
-</div>
-<GridItem>
-<Input
-className="userInput"
-placeholder="Here is a sample placeholder"
-value={userInput}
-onChange={handleMessageChange}
-/>
-<Button onClick={userInputOnclick}> Enter</Button>
-</GridItem>
-</GridItem>
-</Center>
-</Grid>
-</main>
-</ChakraProvider>
+   
+      <Grid paddingTop={"10vh"} paddingInline={60}>
+      
+      <section id="header">
+      <Flex className="py-4">
+        <Avatar src="https://bit.ly/sage-adebayo" />
+        <Box ml="3">
+          <Text fontWeight="bold">
+            Segun Adebayo
+            <Badge ml="1" colorScheme="yellow">
+              Responding
+            </Badge>
+          </Text>
+          <Text fontSize="sm">Last seen two hours ago</Text>
+        </Box>
+      </Flex>
+      <Divider></Divider>
+    
+    </section>
+    <section>
+    <MessagesContainer conversation={conversation} chatBoxRef={chatbox}></MessagesContainer>
+    </section>
+    <section className="relative bottom-0 w-full py-10" >
+        <Center>
+          <TextBox handleClick={userInputOnclick} handleMessageChange={handleMessageChange} userInput={userInput}></TextBox>
+        </Center>
+    </section></Grid>
+   
+     
+  
   );
 }
