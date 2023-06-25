@@ -8,11 +8,9 @@ import { useSearchParams } from 'next/navigation';
 export default function LinkPage() {
   const searchParams = useSearchParams();
 
-  const [loading, setLoading] = useState(false);
   const [star_id, setStarId] = useState('')
 
   useEffect(() => {
-    setLoading(true);
     
     fetch("/api/mongo_db", {
       method: "POST",
@@ -30,7 +28,6 @@ export default function LinkPage() {
     .then((data) => {
       console.log(data);
       setStarId(data);
-      setLoading(false);
     })
     .catch((error) => {
       console.log(error);
@@ -38,10 +35,10 @@ export default function LinkPage() {
   }, []);
 
   const { onCopy, value, setValue, hasCopied } = useClipboard("");
-  console.log(star_id);
+
   return (
     <>
-    {loading ? (
+    {!star_id ? (
               <div>
               <Box w="100%" h="100vh" bgGradient="linear(to-r, #2C2ABB, #FCA6EF)">
                 <Center h="100vh">
