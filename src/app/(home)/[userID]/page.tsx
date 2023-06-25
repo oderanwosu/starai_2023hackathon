@@ -115,7 +115,7 @@ export default function ChatBotPage() {
   };
 
   return (
-    <Grid paddingTop={"10vh"} paddingInline={60}>
+    <Grid paddingTop={"5vh"} paddingInline={"2vw"}>
       <section id="header">
         <Flex className="py-4">
           <Avatar src="https://bit.ly/sage-adebayo" />
