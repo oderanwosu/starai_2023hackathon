@@ -13,78 +13,76 @@ import {
   Textarea,
   Wrap,
   WrapItem,
+  Text,
+  Badge,
+  Box,
+  Flex,
 } from "@chakra-ui/react";
 
 export default function ChatBotPage() {
   return (
     <ChakraProvider>
-      {/* <main className="overflow-hidden">
-        <Grid gap={4}>
-          <GridItem>
-            <Center>
-              <Wrap>
-                <WrapItem>
-                  <Avatar
-                    name="Dan Abrahmov"
-                    src="https://bit.ly/dan-abramov"
-                  />
-                </WrapItem>
-              </Wrap>
-            </Center>
-          </GridItem>
-          <GridItem>
-            <GridItem colSpan={3}>
-              <Center>
-                <Grid>
-                  <h1>Hello, I am this person that you care about</h1>
-                  <h1>Hello, I am this person that you care about</h1>
-                  <h1>Hello, I am this person that you care about</h1>
-                </Grid>
-              </Center>
-            </GridItem>
-          </GridItem>
-        </Grid>
-      </main> */}
-      <main>
-      
-          {/* header */}
-          <div>
-          <Center>
-              <Wrap>
-                <WrapItem>
-                  <Avatar
-                    name="Dan Abrahmov"
-                    src="https://bit.ly/dan-abramov"
-                  />
-                </WrapItem>
-              </Wrap>
-            </Center>
-          </div>
+      <div className="p-20" id="header">
+        <Flex className="py-4">
+          <Avatar src="https://bit.ly/sage-adebayo" />
+          <Box ml="3">
+            <Text fontWeight="bold">
+              Segun Adebayo
+              <Badge ml="1" colorScheme="yellow">
+                Responding
+              </Badge>
+            </Text>
+            <Text fontSize="sm">Last seen two hours ago</Text>
+          </Box>
+        </Flex>
+        <hr></hr>
+      </div>
+      <div className="fixed bottom-0 w-full ">
+        {/* text body */}
+        <Center>
+          <Grid>
+            <GridItem>
+              <Flex>
+              <Text>John Smith&nbsp;</Text>
+              <Text color={'grey'}>Yesterday</Text>
+              </Flex>
+              <Flex
+                overflow='hidden'
+                bgGradient="linear(to-r, #2C2ABB, #FCA6EF)"
+                borderRadius={30}
+              >
+                 <Text color={'white'} padding={2} fontSize={16}>
+                magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.
+              </Text>
+           
+              </Flex>
 
-          <div className="fixed bottom-0 w-full ">
-                {/* text body */}
-            <Center>
-            <Grid>
-                <GridItem>
-                    <h1> doloremque tenetur repellendus autem praesentium nisi, voluptate magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.</h1>
-                </GridItem>
-                <GridItem>
-                    <h1> doloremque tenetur repellendus autem praesentium nisi, voluptate magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.</h1>
-                </GridItem>
-                <GridItem>
-                    <h1> doloremque tenetur repellendus autem praesentium nisi, voluptate magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.</h1>
-                </GridItem>
-            </Grid>
-            </Center>
-            {/*text body area */}
-            <Center>
-            <Textarea placeholder="Here is a sample placeholder" />
-            <Button colorScheme='blue'>Send</Button>
-            </Center> 
-          </div>
-     
-      </main>
-     
+             
+            </GridItem>
+            <GridItem>
+              <h1>
+                {" "}
+                doloremque tenetur repellendus autem praesentium nisi, voluptate
+                magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.
+              </h1>
+            </GridItem>
+            <GridItem>
+              <h1>
+                {" "}
+                doloremque tenetur repellendus autem praesentium nisi, voluptate
+                magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.
+              </h1>
+            </GridItem>
+          </Grid>
+        </Center>
+        {/*text body area */}
+        <Center>
+          <Textarea placeholder="Here is a sample placeholder" />
+          <Button colorScheme="blue">Send</Button>
+        </Center>
+      </div>
+
+      {/* header */}
     </ChakraProvider>
   );
 }
