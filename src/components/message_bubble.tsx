@@ -1,16 +1,16 @@
 import { ChakraProvider, Flex, Text } from "@chakra-ui/react";
 
 const MessageBubble = (props: {
-  isUser: boolean
+  isUser: boolean;
   sender: string;
   text: string;
   dateSent: string;
 }) => {
   const { isUser, text, dateSent } = props;
-  let placement = isUser == true ? "end" : "start";
-  let color = isUser == false ? "bg-primary" : "bg-neutral-content";
-  let textColor = isUser == false ? "white" : "black";
-  let sender = isUser == false ? "" : "You";
+  let placement = isUser ? "end" : "start";
+  let color = isUser ? "bg-primary" : "bg-neutral-content";
+  let textColor = isUser ? "white" : "black";
+  let sender = isUser ? "" : "You";
 
   return (
     <ChakraProvider>
