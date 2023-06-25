@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useState, useRef, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -18,60 +19,54 @@ import {
   Box,
   Flex,
 } from "@chakra-ui/react";
+import useSWR from "swr";
 
 export default function ChatBotPage() {
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  //the conversation
+  let [conversation, setConversation] = useState([]);
+  // adding message to the message box when user type stuff in
+  let [userInput, setUserInput] = useState("");
+  let [botRes, setBotRes] = useState("");
+
+  // user enter the message
+  const userInputOnclick = () => {
+    // message object
+    let message = { content: "", sender: "" };
+    //add user message to the message display
+    if (userInput != "") {
+      message.content = userInput;
+      message.sender = "user";
+      setConversation((preContent) => [...preContent, message]);
+      setUserInput("");
+      //api request
+      const { res, error } = useSWR("/api/mongodb", fetcher);
+      setBotRes(res);
+    }
+    //how to make seperate user message vs chatbot message?
+    //push user input to backend
+    if (botRes != "") {
+      message.content = botRes;
+      message.sender = "star";
+      setConversation((preContent) => [...preContent, message]);
+      setBotRes("");
+    }
+  };
+  // user typing in the message
+  const handleMessageChange = (event) => {
+    setUserInput(event.target.value);
+  };
+
+  // scroll to bottom on new message recieve/sent with use effect
+  const chatbox = useRef(null);
+  useEffect(() => {
+    const chatboxElement = chatbox.current;
+    chatboxElement.scrollIntoView({ behavior: "smooth" });
+    chatboxElement.scrollTop = chatboxElement.scrollHeight;
+  }, [conversation]);
+
   return (
     <ChakraProvider>
-      <div className="p-20" id="header">
-        <Flex className="py-4">
-          <Avatar src="https://bit.ly/sage-adebayo" />
-          <Box ml="3">
-            <Text fontWeight="bold">
-              Segun Adebayo
-              <Badge ml="1" colorScheme="yellow">
-                Responding
-              </Badge>
-            </Text>
-            <Text fontSize="sm">Last seen two hours ago</Text>
-          </Box>
-        </Flex>
-        <hr></hr>
-      </div>
-      <div className="fixed bottom-0 w-full ">
-        {/* text body */}
-        <Center>
-          <Grid>
-            <GridItem>
-              <Flex>
-              <Text>John Smith&nbsp;</Text>
-              <Text color={'grey'}>Yesterday</Text>
-              </Flex>
-              <Flex
-                overflow='hidden'
-                bgGradient="linear(to-r, #2C2ABB, #FCA6EF)"
-                borderRadius={30}
-              >
-                 <Text color={'white'} padding={2} fontSize={16}>
-                magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.
-              </Text>
-           
-              </Flex>
-
-             
-            </GridItem>
-            <GridItem>
-              <h1>
-                {" "}
-                doloremque tenetur repellendus autem praesentium nisi, voluptate
-                magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.
-              </h1>
-            </GridItem>
-            <GridItem>
-              <h1>
-                {" "}
-                doloremque tenetur repellendus autem praesentium nisi, voluptate
-                magni porro sunt illo culpa quo obcaecati. Beatae, ducimus ab.
-              </h1>
             </GridItem>
           </Grid>
         </Center>
