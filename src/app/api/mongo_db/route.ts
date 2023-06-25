@@ -25,15 +25,15 @@ export async function GET(req: Request): Promise<NextResponse> {
 
 export async function POST(req:NextRequest, res: NextResponse) {
     const body = await req.json();
-    const { email, name, links, context } = body;
+    const { name, links, context, profileUrl } = body;
 
     const star_id = uuid();
     const newstar = {
-      startId: star_id,
-      email,
+      starId: star_id,
       name,
       links,
-      context
+      context,
+      profileUrl
     };
 
     try {
