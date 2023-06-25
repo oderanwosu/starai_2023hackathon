@@ -155,11 +155,11 @@ export default function ChatBotPage() {
       <section id="header">
         <Center>
           <Flex className="py-4">
-            <Avatar src="https://bit.ly/sage-adebayo" />
+            <Avatar src="https://media.cnn.com/api/v1/images/stellar/prod/230621150034-taylor-swift-concert-chicago-0602-restricted.jpg?c=3x2" />
           </Flex>
         </Center>
         <Center>
-          <Text>John Smith</Text>
+          <Text>Lucy</Text>
         </Center>
 
         <Divider paddingTop={"5"}></Divider>
