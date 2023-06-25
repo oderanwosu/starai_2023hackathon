@@ -1,24 +1,33 @@
 "use client";
-import { useState, ChangeEvent } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Center, Text, Input, InputGroup, InputLeftElement, Button, Box, VStack } from '@chakra-ui/react';
-import { Icon } from '@chakra-ui/react';
-import { createIcon } from '@chakra-ui/icon';
-import Header from '../../common/header';
+import { useState, ChangeEvent } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import {
+  Center,
+  Text,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Button,
+  Box,
+  VStack,
+} from "@chakra-ui/react";
+import { Icon } from "@chakra-ui/react";
+import { createIcon } from "@chakra-ui/icon";
+import Header from "../../common/header";
 
 export default function SocialsPage() {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
-  const [youtubeURL, setYoutubeURL] = useState('');
+  const [youtubeURL, setYoutubeURL] = useState("");
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setYoutubeURL(event.target.value);
   };
 
   const YoutubeIcon = createIcon({
-    displayName: 'YoutubeIcon',
-    viewBox: '0 0 16 16',
+    displayName: "YoutubeIcon",
+    viewBox: "0 0 16 16",
     path: (
       <path
         fill="currentColor"
@@ -26,31 +35,36 @@ export default function SocialsPage() {
       />
     ),
   });
-  
 
-    return (
-      <div>
-        <Box w="100%" bgGradient="linear(to-r, #2C2ABB, #FCA6EF)">
-          <Header />
-          <Center h="90vh">
-            <VStack>
-              <Text fontSize="24px" color="White" opacity="0.6" fontWeight='400'>
-                This feature will train the AI to speak like you!
-              </Text>
-              <Text fontSize="48px" color="White" fontWeight='500'>
-                Feel free to add any social media links
-              </Text>
-              <Text fontSize="18px" color="White" fontWeight='400'>
-                (At least one is required)
-              </Text>
-              <InputGroup>
-                <InputLeftElement pointerEvents='none'>
-                  {/* <PhoneIcon color='gray.300' /> */}
-                  <Icon as={YoutubeIcon} boxSize={6} fill="currentColor" />
-                </InputLeftElement>
-                <Input type='text' placeholder='Youtube video URL' onChange={handleInputChange} color="White" _placeholder={{ opacity: 0.4, color: 'inherit' }} />
-              </InputGroup>
-              {/* <Link
+  return (
+    <div>
+      <Box w="100%" bgGradient="linear(to-r, #2C2ABB, #FCA6EF)">
+        <Header />
+        <Center h="90vh">
+          <VStack className="p-10">
+            <Text fontSize="24px" color="White" opacity="0.6" fontWeight="400">
+              This feature will train the AI to speak like you!
+            </Text>
+            <Text fontSize="48px" color="White" fontWeight="500">
+              Feel free to add any social media links
+            </Text>
+            <Text fontSize="18px" color="White" fontWeight="400">
+              (At least one is required)
+            </Text>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                {/* <PhoneIcon color='gray.300' /> */}
+                <Icon as={YoutubeIcon} boxSize={6} fill="currentColor" />
+              </InputLeftElement>
+              <Input
+                type="text"
+                placeholder="Youtube video URL"
+                onChange={handleInputChange}
+                color="White"
+                _placeholder={{ opacity: 0.4, color: "inherit" }}
+              />
+            </InputGroup>
+            {/* <Link
                 href={{
                   pathname: '/onboard/data-entry-profile-pic',
                   query: {
@@ -63,32 +77,32 @@ export default function SocialsPage() {
                     Next
                 </Button>
               </Link> */}
-              <Link
-                href={{
-                  pathname: '/onboard/data-entry-profile-pic',
-                  query: {
-                    name: searchParams.get('name'),
-                    context: searchParams.get('context'),
-                    youtubeURL: searchParams.get('youtubeURL')
-                  }
-                }}
-              >
-                <Button variant='outline' m="1">
-                  Next
-                </Button>
-              </Link>
-              <Link
-                href={{
-                  pathname: '/onboard/data-entry-context',
-                }}
-              >
-                <Button variant='outline' m="1">
-                  Back
-                </Button>
-              </Link>
-            </VStack>
-          </Center>
-        </Box>
-      </div>
-    );
-  }
+            <Link
+              href={{
+                pathname: "/onboard/data-entry-profile-pic",
+                query: {
+                  name: searchParams.get("name"),
+                  context: searchParams.get("context"),
+                  youtubeURL: searchParams.get("youtubeURL"),
+                },
+              }}
+            >
+              <Button variant="outline" m="1">
+                Next
+              </Button>
+            </Link>
+            <Link
+              href={{
+                pathname: "/onboard/data-entry-context",
+              }}
+            >
+              <Button variant="outline" m="1">
+                Back
+              </Button>
+            </Link>
+          </VStack>
+        </Center>
+      </Box>
+    </div>
+  );
+}
