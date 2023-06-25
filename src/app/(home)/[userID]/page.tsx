@@ -40,8 +40,23 @@ export default function ChatBotPage() {
       setConversation((preContent) => [...preContent, message]);
       setUserInput("");
       //api request
-      const { res, error } = useSWR("/api/mongodb", fetcher);
-      setBotRes(res);
+      // const { res, error } = useSWR("/api/mongodb", fetcher);
+      console.log("user input: " + userInput);
+      fetch("/api/chat", {
+        method: "POST",
+        body: JSON.stringify({
+          question: message.content = userInput,
+          history: conversation
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }).then((response) => response.json()).then((data) => {
+        setBotRes(data.answer);
+      }).catch((error) => {
+        console.log(error);
+      });
+      // setBotRes(res);
     }
     //how to make seperate user message vs chatbot message?
     //push user input to backend
@@ -66,18 +81,45 @@ export default function ChatBotPage() {
   }, [conversation]);
 
   return (
-    <ChakraProvider>
-            </GridItem>
-          </Grid>
-        </Center>
-        {/*text body area */}
-        <Center>
-          <Textarea placeholder="Here is a sample placeholder" />
-          <Button colorScheme="blue">Send</Button>
-        </Center>
-      </div>
-
-      {/* header */}
-    </ChakraProvider>
+<ChakraProvider>
+<main className="overflow-hidden">
+<Grid gap={4}>
+<GridItem className="chatbox" colSpan={1}>
+<Center>
+<Wrap>
+<WrapItem>
+<Avatar
+name="Dan Abrahmov"
+src="https://bit.ly/dan-abramov"
+/>
+</WrapItem>
+</Wrap>
+</Center>
+</GridItem>
+<Center>
+<GridItem colSpan={3}>
+<div
+ref={chatbox}
+className="messageContainer"
+style={{ width: "200px", height: "100px", overflowY: "auto" }}
+>
+{conversation.map((message, index) => (
+<div key={index}>{message.content}</div>
+))}
+</div>
+<GridItem>
+<Input
+className="userInput"
+placeholder="Here is a sample placeholder"
+value={userInput}
+onChange={handleMessageChange}
+/>
+<Button onClick={userInputOnclick}> Enter</Button>
+</GridItem>
+</GridItem>
+</Center>
+</Grid>
+</main>
+</ChakraProvider>
   );
 }
