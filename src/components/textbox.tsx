@@ -10,7 +10,7 @@ const TextBox = (props: {handleClick: any, handleMessageChange: any, userInput: 
     const {handleClick, handleMessageChange, userInput, handleKeyPress} = props
     return (
         <InputGroup size='md'>
-      <Textarea resize={"none"} placeholder="Here is a sample placeholder" onChange={handleMessageChange} value={userInput} onKeyDown={handleKeyPress} />
+      <Textarea isRequired resize={"none"} placeholder="Here is a sample placeholder" onChange={handleMessageChange} value={userInput} onKeyDown={handleKeyPress} />
       <InputRightElement width='5.5rem' >
         <Button h='1.75rem' size='sm' onClick={handleClick }>
           Send

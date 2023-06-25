@@ -5,19 +5,18 @@ const MessageBubble = (props: {
   text: string;
   dateSent: string;
 }) => {
-  const { sender, text, dateSent } = props;
-  let isUser = sender === "user" ? true : false;
-  let placement = isUser == false || isUser == null ? "end" : "start";
+  const { isUser, text, dateSent } = props;
+  let placement = isUser == true ? "end" : "start";
   let color = isUser == false ? "bg-primary" : "bg-neutral-content";
   let textColor = isUser == false ? "white" : "black";
-  let senderName = isUser == false ? "" : "You";
+  let sender = isUser == false ? "" : "You";
 
   return (
     <ChakraProvider>
       <div className={`chat chat-${placement}`}>
         <div className="chat-header">
-          {senderName}
-          <time className="text-xs opacity-50">&nbsp;12:45</time>
+          {sender}
+          <time className="text-xs opacity-50">&nbsp;{dateSent}</time>
         </div>
         <div className={`chat-bubble ${color}`}>
           <Text color={textColor}>{text}</Text>

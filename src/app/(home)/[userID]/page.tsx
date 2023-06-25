@@ -28,11 +28,13 @@ import MessagesContainer from "@/components/messages_list";
 import TextBox from "@/components/textbox";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
+import { Message } from "postcss";
 
 export default function ChatBotPage() {
   const query = useSearchParams();
   const userID = query.get("userID");
-
+ 
+ 
   let [starImageURL, setStarImageURL] = useState("");
   let [starName, setStarName] = useState("");
   let [responseStatus, setResponseStatus] = useState(0);
@@ -45,20 +47,29 @@ export default function ChatBotPage() {
     setStarName(data.starName);
   }
 
+
   //the conversation
   let [conversation, setConversation] = useState([]);
   // adding message to the message box when user type stuff in
   let [userInput, setUserInput] = useState("");
   let [botRes, setBotRes] = useState("");
-
   // user enter the message
   const userInputOnclick = () => {
     // message object
-    let message = { content: "", sender: "" };
+    const date = Date.now()
+    let message: Message = {
+      content: "", sender: "", time: new Date(date).toString(),
+      type: ""
+    };
+
+  
     //add user message to the message display
-    if (userInput != "") {
+
+    if (true) {
+      setResponseStatus(2)
       message.content = userInput;
       message.sender = "user";
+      message.isUser = true;
       setConversation((preContent) => [...preContent, message]);
       setUserInput("");
       //api request
@@ -76,25 +87,37 @@ export default function ChatBotPage() {
       })
         .then((response) => response.json())
         .then((data) => {
-          setBotRes(data.answer);
+        
+          // let botMessage: Message = {
+          //   content: data.content, sender: "star", isUser: false, time: Date.now().toString(),
+          //   type: ""
+          // };
+          
         })
         .catch((error) => {
           console.log(error);
         });
+        
+        const botDate = Date.now()
+        let botMessage: Message = {
+          content: "9343243" , sender: "star", isUser: false, time: new Date(date).toString(),
+          type: ""
+        };
+
+        
+        
+       
+        setConversation((preContent) => [...preContent, botMessage]); 
+        setTimeout(()=> {setResponseStatus(3)}, 500);
+        setResponseStatus(2)
+      // setBotRes(res);
     }
     //push user input to backend
-    setBotRes("bot response");
-
-    if (botRes != "") {
-      message.content = botRes;
-      message.sender = "star";
-      console.log("bot responses is " + message.content);
-      setConversation((preContent) => [...preContent, message]);
-      setBotRes("");
-    }
+   
   };
 
   const handleKeyPress = (event) => {
+
     if (event.keyCode === 13) {
       userInputOnclick();
     }
@@ -124,51 +147,52 @@ export default function ChatBotPage() {
     }
   };
 
-  // scroll to bottom on new message recieve/sent with use effect
-  const chatbox = useRef(null);
-  useEffect(() => {
-    const chatboxElement = chatbox.current;
-    document.title = "Chat";
-    chatboxElement.scrollIntoView({ behavior: "smooth" });
-    chatboxElement.scrollTop = chatboxElement.scrollHeight;
-  }, [conversation]);
+   // scroll to bottom on new message recieve/sent with use effect
+   const chatbox = useRef(null);
+   useEffect(() => {
+     const chatboxElement = chatbox.current;
+      document.title = 'Chat'
+     chatboxElement.scrollIntoView({ behavior: "smooth" });
+     chatboxElement.scrollTop = chatboxElement.scrollHeight;
+     
+     
+   }, [conversation]);
 
   return (
     <Grid paddingTop={"5vh"} paddingInline={"3vw"}>
       <section id="header">
-        <Flex className="py-4">
-          <Avatar src="https://bit.ly/sage-adebayo" />
-          <Box ml="3">
-            <Text fontWeight="bold">
-              {starName}
-              {responseStatus === 0 && (
-                <Badge ml="1" colorScheme="grey">
-                  Waiting for you
-                </Badge>
-              )}
-              {responseStatus === 2 && (
-                <Badge ml="1" colorScheme="green">
-                  Thinking...
-                </Badge>
-              )}
-              {responseStatus === 3 && (
-                <Badge ml="1" colorScheme="blue">
-                  Responded
-                </Badge>
-              )}
-            </Text>
-            <Text fontSize="sm">Last seen two hours ago</Text>
-          </Box>
-        </Flex>
-        <Divider></Divider>
-      </section>
-      <section>
-        <MessagesContainer
-          conversation={conversation}
-          chatBoxRef={chatbox}
-        ></MessagesContainer>
-      </section>
-      <section className="relative bottom-0 w-full py-10">
+      <Flex className="py-4">
+        <Avatar src="https://bit.ly/sage-adebayo" />
+        <Box ml="3">
+          <Text fontWeight="bold">
+            {starName}
+            {responseStatus === 0 && (
+              <Badge ml="1">
+                Waiting for you
+              </Badge>
+            )}
+            {responseStatus === 2 && (
+              <Badge ml="1" colorScheme="blue">
+                Typing...
+              </Badge>
+            )}
+            {responseStatus === 3 && (
+              <Badge ml="1" colorScheme="purple">
+                Responded
+              </Badge>
+            )}
+            
+          </Text>
+          <Text fontSize="sm">Last seen two hours ago</Text>
+        </Box>
+      </Flex>
+      <Divider></Divider>
+       
+    </section>
+    <section>
+    <MessagesContainer conversation={conversation} chatBoxRef={chatbox}></MessagesContainer>
+    </section>
+    <section className="relative bottom-0 w-full py-10" >
         <Center>
           <TextBox
             handleClick={userInputOnclick}

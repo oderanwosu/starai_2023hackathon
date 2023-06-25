@@ -1,8 +1,10 @@
 export interface Message {
     content: string, 
-    sentFromUser: boolean
-    sender: string
-}
+        sender: string, 
+        isUser: boolean, 
+        time: string
+    };
+
 
 export interface Star {
     name: string
