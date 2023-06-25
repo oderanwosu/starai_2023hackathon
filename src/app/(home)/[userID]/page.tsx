@@ -34,6 +34,10 @@ export default function ChatBotPage() {
   const query = useSearchParams()
   const userID = query.get('userID')
 
+  let [starImageURL, setStarImageURL] = useState("");
+  let [starName, setStarName] = useState("");
+  let [responseStatus, setResponseStatus] = useState(0);
+
 
   //fetch star information
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -53,11 +57,12 @@ export default function ChatBotPage() {
   // user enter the message
   const userInputOnclick = () => {
     // message object
-    let message = { content: "", sender: "" };
+    let message = { content: "", sender: "", isUser: false };
     //add user message to the message display
     if (userInput != "") {
       message.content = userInput;
       message.sender = "user";
+      message.isUser = message.sender === "user" 
       setConversation((preContent) => [...preContent, message]);
       setUserInput("");
       //api request
@@ -84,6 +89,7 @@ export default function ChatBotPage() {
     }
     //how to make seperate user message vs chatbot message?
     //push user input to backend
+    setBotRes("1323")
     if (botRes != "") {
       message.content = botRes;
       message.sender = "star";
@@ -91,22 +97,29 @@ export default function ChatBotPage() {
       setBotRes("");
     }
   };
-  
-  if (error){
-    return <Flex
-   width={"100vw"}
-   height={"100vh"}
-   alignContent={"center"}
-   justifyContent={"center"}
- ><Center><Text color={"tomato"}> There was an error retrieving the user. Refresh the page.</Text></Center></Flex>
+
+  const handleKeyPress = (event) => {
+    if(event.keyCode === 13){
+      userInputOnclick()
+    }
+    
   }
   
-   if (!data) return  <Flex
-   width={"100vw"}
-   height={"100vh"}
-   alignContent={"center"}
-   justifyContent={"center"}
- ><Center><CircularProgress isIndeterminate color="#2C2ABB" /></Center></Flex>
+//   if (error){
+//     return <Flex
+//    width={"100vw"}
+//    height={"100vh"}
+//    alignContent={"center"}
+//    justifyContent={"center"}
+//  ><Center><Text color={"tomato"}> There was an error retrieving the user. Refresh the page.</Text></Center></Flex>
+//   }
+  
+//    if (!data) return  <Flex
+//    width={"100vw"}
+//    height={"100vh"}
+//    alignContent={"center"}
+//    justifyContent={"center"}
+//  ><Center><CircularProgress isIndeterminate color="#2C2ABB" /></Center></Flex>
 
   // user typing in the message
   const handleMessageChange = (event) => {
@@ -163,7 +176,7 @@ export default function ChatBotPage() {
     </section>
     <section className="relative bottom-0 w-full py-10" >
         <Center>
-          <TextBox handleClick={userInputOnclick} handleMessageChange={handleMessageChange} userInput={userInput}></TextBox>
+          <TextBox handleClick={userInputOnclick} handleMessageChange={handleMessageChange} userInput={userInput} handleKeyPress={handleKeyPress}></TextBox>
         </Center>
       </section>
     </Grid>
