@@ -30,13 +30,20 @@ import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 
 export default function ChatBotPage() {
-  const query = useSearchParams();
-  const userID = query.get("userID");
+ 
+  const query = useSearchParams()
+  const userID = query.get('userID')
+
 
   //fetch star information
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const { data, error } = useSWR(`api/user?id=${userID}`, fetcher);
+  if(data != null){
+    setStarImageURL(data.starImageURL)
+    setStarName(data.starName)
+  }
 
+  
   //the conversation
   let [conversation, setConversation] = useState([]);
   // adding message to the message box when user type stuff in
@@ -84,18 +91,21 @@ export default function ChatBotPage() {
       setBotRes("");
     }
   };
-
+  
   // if (error) return <div>Failed to load</div>
-  //    if (!data) return  <Flex
-  //    width={"100vw"}
-  //    height={"100vh"}
-  //    alignContent={"center"}
-  //    justifyContent={"center"}
-  //  ><Center><CircularProgress isIndeterminate color="#2C2ABB" /></Center></Flex>
+//    if (!data) return  <Flex
+//    width={"100vw"}
+//    height={"100vh"}
+//    alignContent={"center"}
+//    justifyContent={"center"}
+//  ><Center><CircularProgress isIndeterminate color="#2C2ABB" /></Center></Flex>
 
   // user typing in the message
   const handleMessageChange = (event) => {
     setUserInput(event.target.value);
+    if(event.key === "Enter"){
+    userInputOnclick()
+    }
   };
 
   // scroll to bottom on new message recieve/sent with use effect
@@ -115,29 +125,27 @@ export default function ChatBotPage() {
   };
 
   return (
-    <Grid paddingTop={"5vh"} paddingInline={"2vw"}>
+    <Grid paddingTop={"5vh"} paddingInline={"3vw"}>
       <section id="header">
-        <Flex className="py-4">
-          <Avatar src="https://bit.ly/sage-adebayo" />
-          <Box ml="3">
-            <Text fontWeight="bold">
-              Segun Adebayo
-              <Badge ml="1" colorScheme="yellow">
-                Responding
-              </Badge>
-            </Text>
-            <Text fontSize="sm">Last seen two hours ago</Text>
-          </Box>
-        </Flex>
-        <Divider></Divider>
-      </section>
-      <section>
-        <MessagesContainer
-          conversation={conversation}
-          chatBoxRef={chatbox}
-        ></MessagesContainer>
-      </section>
-      <section className="relative bottom-0 w-full py-10">
+      <Flex className="py-4">
+        <Avatar src="https://bit.ly/sage-adebayo" />
+        <Box ml="3">
+          <Text fontWeight="bold">
+            Segun Adebayo
+            <Badge ml="1" colorScheme="yellow">
+              Responding
+            </Badge>
+          </Text>
+          <Text fontSize="sm">Last seen two hours ago</Text>
+        </Box>
+      </Flex>
+      <Divider></Divider>
+       
+    </section>
+    <section>
+    <MessagesContainer conversation={conversation} chatBoxRef={chatbox}></MessagesContainer>
+    </section>
+    <section className="relative bottom-0 w-full py-10" >
         <Center>
           <TextBox
             handleClick={userInputOnclick}
