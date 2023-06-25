@@ -19,17 +19,19 @@ import {
 export default function ChatBotPage() {
   //the conversation
   let [conversation, setConversation] = useState([]);
-
   // adding message to the message box when user type stuff in
   let [userInput, setUserInput] = useState("");
 
   // user enter the message
   const userInputOnclick = () => {
+    // message object
+    let message = { content: "", sender: "" };
     //add user message to the message display
-    setConversation((preContent) => [...preContent, userInput]);
+    message.content = userInput;
+    message.sender = "user";
+    setConversation((preContent) => [...preContent, message]);
     setUserInput("");
-    console.log(userInput);
-    console.log(conversation);
+    //how to make seperate user message vs chatbot message?
     //push user input to backend
   };
   // user typing in the message
@@ -39,7 +41,6 @@ export default function ChatBotPage() {
 
   // scroll to bottom on new message recieve/sent with use effect
   const chatbox = useRef(null);
-
   useEffect(() => {
     const chatboxElement = chatbox.current;
     chatboxElement.scrollIntoView({ behavior: "smooth" });
@@ -70,7 +71,7 @@ export default function ChatBotPage() {
                 style={{ width: "200px", height: "100px", overflowY: "auto" }}
               >
                 {conversation.map((message, index) => (
-                  <div key={index}>{message}</div>
+                  <div key={index}>{message.content}</div>
                 ))}
               </div>
               <GridItem>
