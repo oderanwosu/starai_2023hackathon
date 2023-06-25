@@ -33,8 +33,7 @@ import { Message } from "postcss";
 export default function ChatBotPage() {
   const query = useSearchParams();
   const userID = query.get("userID");
- 
- 
+
   let [starImageURL, setStarImageURL] = useState("");
   let [starName, setStarName] = useState("");
   let [responseStatus, setResponseStatus] = useState(0);
@@ -47,7 +46,6 @@ export default function ChatBotPage() {
     setStarName(data.starName);
   }
 
-
   //the conversation
   let [conversation, setConversation] = useState([]);
   // adding message to the message box when user type stuff in
@@ -56,17 +54,18 @@ export default function ChatBotPage() {
   // user enter the message
   const userInputOnclick = () => {
     // message object
-    const date = Date.now()
+    const date = Date.now();
     let message: Message = {
-      content: "", sender: "", time: new Date(date).toString(),
-      type: ""
+      content: "",
+      sender: "",
+      time: new Date(date).toString(),
+      type: "",
     };
 
-  
     //add user message to the message display
 
     if (true) {
-      setResponseStatus(2)
+      setResponseStatus(2);
       message.content = userInput;
       message.sender = "user";
       message.isUser = true;
@@ -87,37 +86,32 @@ export default function ChatBotPage() {
       })
         .then((response) => response.json())
         .then((data) => {
-        
-          // let botMessage: Message = {
-          //   content: data.content, sender: "star", isUser: false, time: Date.now().toString(),
-          //   type: ""
-          // };
-          
+          console.log(data);
+          setResponseStatus(2);
+          let botMessage: Message = {
+            content: data.text,
+            sender: "star",
+            isUser: false,
+            time: new Date(date).toString(),
+            type: "",
+          };
+
+          setConversation((preContent) => [...preContent, botMessage]);
+          setTimeout(() => {
+            setResponseStatus(3);
+          }, 500);
+          setResponseStatus(2);
         })
         .catch((error) => {
           console.log(error);
         });
-        
-        const botDate = Date.now()
-        let botMessage: Message = {
-          content: "9343243" , sender: "star", isUser: false, time: new Date(date).toString(),
-          type: ""
-        };
 
-        
-        
-       
-        setConversation((preContent) => [...preContent, botMessage]); 
-        setTimeout(()=> {setResponseStatus(3)}, 500);
-        setResponseStatus(2)
       // setBotRes(res);
     }
     //push user input to backend
-   
   };
 
   const handleKeyPress = (event) => {
-
     if (event.keyCode === 13) {
       userInputOnclick();
     }
@@ -147,30 +141,40 @@ export default function ChatBotPage() {
     }
   };
 
-   // scroll to bottom on new message recieve/sent with use effect
-   const chatbox = useRef(null);
-   useEffect(() => {
-     const chatboxElement = chatbox.current;
-      document.title = 'Chat'
-     chatboxElement.scrollIntoView({ behavior: "smooth" });
-     chatboxElement.scrollTop = chatboxElement.scrollHeight;
-     
-     
-   }, [conversation]);
+  // scroll to bottom on new message recieve/sent with use effect
+  const chatbox = useRef(null);
+  useEffect(() => {
+    const chatboxElement = chatbox.current;
+    document.title = "Chat";
+    chatboxElement.scrollIntoView({ behavior: "smooth" });
+    chatboxElement.scrollTop = chatboxElement.scrollHeight;
+  }, [conversation]);
 
   return (
     <Grid paddingTop={"5vh"} paddingInline={"3vw"}>
       <section id="header">
-      <Flex className="py-4">
-        <Avatar src="https://bit.ly/sage-adebayo" />
-        <Box ml="3">
+        <Center>
+          <Flex className="py-4">
+            <Avatar src="https://bit.ly/sage-adebayo" />
+          </Flex>
+        </Center>
+        <Center>
+          <Text>John Smith</Text>
+        </Center>
+
+        <Divider paddingTop={"5"}></Divider>
+      </section>
+      <section>
+        <MessagesContainer
+          conversation={conversation}
+          chatBoxRef={chatbox}
+        ></MessagesContainer>
+      </section>
+      <section className="relative bottom-0 w-full py-5">
+        <Box ml="5" p={5}>
           <Text fontWeight="bold">
             {starName}
-            {responseStatus === 0 && (
-              <Badge ml="1">
-                Waiting for you
-              </Badge>
-            )}
+            {responseStatus === 0 && <Badge ml="1">Waiting for you</Badge>}
             {responseStatus === 2 && (
               <Badge ml="1" colorScheme="blue">
                 Typing...
@@ -181,18 +185,8 @@ export default function ChatBotPage() {
                 Responded
               </Badge>
             )}
-            
           </Text>
-          <Text fontSize="sm">Last seen two hours ago</Text>
         </Box>
-      </Flex>
-      <Divider></Divider>
-       
-    </section>
-    <section>
-    <MessagesContainer conversation={conversation} chatBoxRef={chatbox}></MessagesContainer>
-    </section>
-    <section className="relative bottom-0 w-full py-10" >
         <Center>
           <TextBox
             handleClick={userInputOnclick}

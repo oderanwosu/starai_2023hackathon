@@ -18,7 +18,7 @@ const MessagesContainer = (props: {conversation: Array<Message>, chatBoxRef: any
             
         {conversation.map((message, index) => (
             
-            <MessageBubble key={index} isUser={message.isUser} text={message.content} dateSent={message.time}></MessageBubble>
+            <MessageBubble sender={message.sender} key={index} isUser={message.isUser} text={message.content} dateSent={message.time}></MessageBubble>
         ))}
         </div>
     </ChakraProvider>

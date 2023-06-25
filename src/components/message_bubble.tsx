@@ -1,6 +1,7 @@
 import { ChakraProvider, Flex, Text } from "@chakra-ui/react";
 
 const MessageBubble = (props: {
+  isUser: boolean
   sender: string;
   text: string;
   dateSent: string;
