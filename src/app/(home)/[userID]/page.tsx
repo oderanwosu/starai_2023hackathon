@@ -110,7 +110,7 @@ export default function ChatBotPage() {
  
   return (
    
-      <Grid paddingTop={"10vh"} paddingInline={60}>
+      <Grid paddingTop={"5vh"} paddingInline={"2vw"}>
       
       <section id="header">
       <Flex className="py-4">
@@ -126,7 +126,7 @@ export default function ChatBotPage() {
         </Box>
       </Flex>
       <Divider></Divider>
-    
+       
     </section>
     <section>
     <MessagesContainer conversation={conversation} chatBoxRef={chatbox}></MessagesContainer>
