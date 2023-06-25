@@ -2,7 +2,7 @@
 import { useState, ChangeEvent } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Center, Text, Input, Button, Box } from '@chakra-ui/react';
+import { Center, Text, Input, Button, Box, VStack } from '@chakra-ui/react';
 
 
 export default function ProfilePicPage() {
@@ -18,27 +18,39 @@ export default function ProfilePicPage() {
       <div>
         <Box w="100%" h="100vh" bgGradient="linear(to-r, #2C2ABB, #FCA6EF)">
           <Center h="100vh">
-            <Text fontSize="48px" color="White">
-              Upload your profile picture
-            </Text>
-            <Text fontSize="24px" color="White">
-              Image url:
-            </Text>
-            <Input type="text" value={profilePicURL} onChange={handleInputChange} placeholder="type here" size="32px" variant="unstyled" fontWeight="normal"  color="whiteAlpha.800" />
-            <Link
-              href={{
-                pathname: '/onboard/generate-url-loading',
-                query: {
-                  name: searchParams.get('name'),
-                  context: searchParams.get('context'),
-                  profilePicURL: profilePicURL
-                }
-              }}
-            >
-              <Button colorScheme='teal' variant='outline'>
-                Next
-              </Button>
-            </Link>
+            <VStack>
+              <Text fontSize="48px" color="White" pb="2rem">
+                Upload your profile picture
+              </Text>
+              <Text fontSize="24px" color="White" opacity="0.6" pb="1rem">
+                Image url:
+              </Text>
+              <Input type="text" value={profilePicURL} onChange={handleInputChange} placeholder="type here" fontWeight="normal" color="White" _placeholder={{ opacity: 0.4, color: 'inherit' }} />
+              <Link
+                href={{
+                  pathname: '/onboard/generate-url-loading',
+                  query: {
+                    name: searchParams.get('name'),
+                    context: searchParams.get('context'),
+                    youtubeURL: searchParams.get('youtubeURL'),
+                    profilePicURL: profilePicURL
+                  }
+                }}
+              >
+                <Button variant='outline'>
+                  Next
+                </Button>
+              </Link>
+              <Link
+                href={{
+                  pathname: '/onboard/data-entry-socials',
+                }}
+              >
+                <Button variant='outline' m="1">
+                  Back
+                </Button>
+              </Link>
+            </VStack>
           </Center>
         </Box>
       </div>

@@ -19,7 +19,7 @@ export default function NamePage() {
           <Center h="100vh">
             <VStack>
               <Text fontSize="48px" color="White" pb="4rem">
-                My name is&nbsp; <Input type="text" value={name} onChange={handleInputChange} placeholder="type here" size="48px" variant="unstyled" fontWeight="normal" color="White" width='25rem' _placeholder={{ opacity: 0.4, color: 'inherit' }} />
+                My name is&nbsp;<Input type="text" value={name} onChange={handleInputChange} placeholder="type here" size="48px" variant="unstyled" fontWeight="normal" color="White" width='25rem' _placeholder={{ opacity: 0.4, color: 'inherit' }} />
               </Text>
               <Link
                 href={{
