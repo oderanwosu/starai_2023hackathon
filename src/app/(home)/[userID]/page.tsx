@@ -27,10 +27,13 @@ export default function ChatBotPage() {
     // message object
     let message = { content: "", sender: "" };
     //add user message to the message display
-    message.content = userInput;
-    message.sender = "user";
-    setConversation((preContent) => [...preContent, message]);
-    setUserInput("");
+    if (userInput != "") {
+      message.content = userInput;
+      message.sender = "user";
+      setConversation((preContent) => [...preContent, message]);
+      setUserInput("");
+    }
+
     //how to make seperate user message vs chatbot message?
     //push user input to backend
   };
