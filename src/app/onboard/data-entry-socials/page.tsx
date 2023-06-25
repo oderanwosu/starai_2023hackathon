@@ -5,8 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Center, Text, Input, InputGroup, InputLeftElement, Button, Box, VStack } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { createIcon } from '@chakra-ui/icon';
-
-
+import Header from '../../common/header';
 
 export default function SocialsPage() {
   const searchParams = useSearchParams()
@@ -31,16 +30,17 @@ export default function SocialsPage() {
 
     return (
       <div>
-        <Box w="100%" h="100vh" bgGradient="linear(to-r, #2C2ABB, #FCA6EF)">
-          <Center h="100vh">
+        <Box w="100%" bgGradient="linear(to-r, #2C2ABB, #FCA6EF)">
+          <Header />
+          <Center h="90vh">
             <VStack>
-              <Text fontSize="24px" color="White" opacity="0.6">
+              <Text fontSize="24px" color="White" opacity="0.6" fontWeight='400'>
                 This feature will train the AI to speak like you!
               </Text>
-              <Text fontSize="48px" color="White">
+              <Text fontSize="48px" color="White" fontWeight='500'>
                 Feel free to add any social media links
               </Text>
-              <Text fontSize="18px" color="White">
+              <Text fontSize="18px" color="White" fontWeight='400'>
                 (At least one is required)
               </Text>
               <InputGroup>

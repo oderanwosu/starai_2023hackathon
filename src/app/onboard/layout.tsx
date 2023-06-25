@@ -7,7 +7,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 // const inter = Inter({ subsets: ['latin'] })
 const poppins = Poppins({
   subsets: ['latin'],
-  weight: '700'
+  weight: ['400', '500', '600', '700', '800']
 })
 
 export default function RootLayout({
