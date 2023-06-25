@@ -8,7 +8,7 @@ const MessageBubble = (props: {
 }) => {
   const { isUser, text, dateSent } = props;
 
-  let placement = !isUser ? "end" : "start";
+  let placement = isUser ? "end" : "start";
   let color = !isUser ? "bg-primary" : "bg-neutral-content";
   let textColor = !isUser ? "white" : "black";
   let sender = !isUser ? "" : "You";
