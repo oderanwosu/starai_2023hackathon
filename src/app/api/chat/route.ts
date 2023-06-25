@@ -5,22 +5,17 @@ import { makeChain } from '@/utils/makechain';
 import { pinecone } from '@/utils/pinecone-clients';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 
-export default async function handler(
-  req: NextApiRequest,
+export async function POST(
+  req: Request,
   res: NextApiResponse,
 ) {
-  const { question, history } = req.body;
+  const body = await req.json();
 
-  console.log('question', question);
-
-  //only accept post requests
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
+  console.log('request body', body);
+  const { question, history } = body;
 
   if (!question) {
-    return res.status(400).json({ message: 'No question in the request' });
+    return new Response('No question in request', { status: 400 })
   }
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
@@ -51,6 +46,6 @@ export default async function handler(
     res.status(200).json(response);
   } catch (error: any) {
     console.log('error', error);
-    res.status(500).json({ error: error.message || 'Something went wrong' });
+    return new Response(error, { status: 500 })
   }
 }
