@@ -11,3 +11,10 @@ export interface Star {
     id: string
     imageURL: string
 }
+
+export interface StarsCollection {
+    email: string,
+    name: string,
+    links: string[],
+    context: string
+}
